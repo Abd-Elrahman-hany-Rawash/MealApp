@@ -1,26 +1,37 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { Colors, Spacing, BorderRadius, Typography } from '../constants/theme';
 
 export default function MealDetailBody({ ingredients = [], steps = [] }) {
   return (
     <View style={styles.body}>
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Ingredients</Text>
-        <View style={styles.listBlock}>
+        <View style={styles.sectionHeader}>
+          <Ionicons name="cart" size={22} color={Colors.primary} />
+          <Text style={styles.sectionTitle}>Ingredients</Text>
+        </View>
+        <View style={styles.listContainer}>
           {ingredients.map((item, index) => (
-            <Text key={index} style={styles.listItem}>
-              • {item}
-            </Text>
+            <View key={index} style={styles.ingredientItem}>
+              <View style={styles.bullet} />
+              <Text style={styles.ingredientText}>{item}</Text>
+            </View>
           ))}
         </View>
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Steps</Text>
-        <View style={styles.listBlock}>
+        <View style={styles.sectionHeader}>
+          <Ionicons name="clipboard" size={22} color={Colors.secondary} />
+          <Text style={styles.sectionTitle}>Instructions</Text>
+        </View>
+        <View style={styles.listContainer}>
           {steps.map((step, index) => (
-            <View key={index} style={styles.stepRow}>
-              <Text style={styles.stepNumber}>{index + 1}.</Text>
+            <View key={index} style={styles.stepItem}>
+              <View style={styles.stepNumber}>
+                <Text style={styles.stepNumberText}>{index + 1}</Text>
+              </View>
               <Text style={styles.stepText}>{step}</Text>
             </View>
           ))}
@@ -32,48 +43,67 @@ export default function MealDetailBody({ ingredients = [], steps = [] }) {
 
 const styles = StyleSheet.create({
   body: {
-    paddingHorizontal: 16,
+    padding: Spacing.xl,
+    paddingTop: 0,
   },
   section: {
-    marginTop: 24,
-    paddingBottom: 20,
+    marginBottom: Spacing.xxxl,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.md,
+    marginBottom: Spacing.lg,
   },
   sectionTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#1a1a1a',
-    marginBottom: 12,
-    borderBottomWidth: 2,
-    borderBottomColor: '#2e7d32',
-    paddingBottom: 6,
+    ...Typography.title,
+    fontSize: 20,
   },
-  listBlock: {
-    backgroundColor: '#f5f5f5',
-    borderRadius: 10,
-    padding: 14,
+  listContainer: {
+    backgroundColor: Colors.background,
+    borderRadius: BorderRadius.lg,
+    padding: Spacing.lg,
+    gap: Spacing.md,
   },
-  listItem: {
-    fontSize: 15,
-    color: '#333',
-    lineHeight: 24,
-    marginBottom: 6,
-  },
-  stepRow: {
+  ingredientItem: {
     flexDirection: 'row',
-    marginBottom: 12,
     alignItems: 'flex-start',
+    gap: Spacing.md,
+  },
+  bullet: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: Colors.primary,
+    marginTop: 8,
+  },
+  ingredientText: {
+    ...Typography.body,
+    flex: 1,
+    color: Colors.text,
+  },
+  stepItem: {
+    flexDirection: 'row',
+    gap: Spacing.md,
+    marginBottom: Spacing.md,
   },
   stepNumber: {
-    fontSize: 15,
+    width: 28,
+    height: 28,
+    borderRadius: BorderRadius.full,
+    backgroundColor: Colors.secondary,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  stepNumberText: {
+    color: Colors.textOnPrimary,
+    fontSize: 14,
     fontWeight: '700',
-    color: '#2e7d32',
-    marginRight: 8,
-    minWidth: 24,
   },
   stepText: {
+    ...Typography.body,
     flex: 1,
-    fontSize: 15,
-    color: '#333',
-    lineHeight: 22,
+    color: Colors.text,
+    paddingTop: 3,
   },
 });

@@ -1,64 +1,109 @@
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { Pressable } from 'react-native';
-import { View, Text ,Image, StyleSheet} from 'react-native';
+import { View, Text, Image, Pressable, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { Colors, Spacing, BorderRadius, Shadows, Typography } from '../constants/theme';
 
 function MealItem({ title, imageUrl, duration, complexity, affordability, id }) {
-    const navigation = useNavigation();
+  const navigation = useNavigation();
+
   return (
-    <View style={styles.mealItem}>
-    <Pressable 
-    style={({pressed})=>(pressed?styles.buttonPressed :null)}
-    
-    onPress={() => navigation.navigate('MealDetails', { mealId: id })}>
-    <View style={styles.innerContainer}>
-      <View>
-      <Image source={{ uri: imageUrl }} style={styles.image} />
-      <Text style={styles.title}>{title}</Text>
+    <Pressable
+      onPress={() => navigation.navigate('MealDetails', { mealId: id })}
+      style={({ pressed }) => [styles.container, pressed && styles.pressed]}
+      android_ripple={{ color: Colors.overlayLight }}
+    >
+      <View style={styles.imageContainer}>
+        <Image source={{ uri: imageUrl }} style={styles.image} />
+        <View style={styles.imageOverlay} />
       </View>
-      <View style={styles.details}>
-        <Text style={styles.detailItem}>{duration}m</Text>
-        <Text style={styles.detailItem}>{complexity.toUpperCase()}</Text>
-        <Text style={styles.detailItem}>{affordability.toUpperCase()}</Text>
+      
+      <View style={styles.content}>
+        <Text style={styles.title} numberOfLines={2}>
+          {title}
+        </Text>
+        
+        <View style={styles.infoRow}>
+          <View style={styles.infoItem}>
+            <Ionicons name="time-outline" size={16} color={Colors.primary} />
+            <Text style={styles.infoText}>{duration} min</Text>
+          </View>
+          
+          <View style={styles.divider} />
+          
+          <View style={styles.infoItem}>
+            <Ionicons name="speedometer-outline" size={16} color={Colors.primary} />
+            <Text style={styles.infoText}>{complexity}</Text>
+          </View>
+          
+          <View style={styles.divider} />
+          
+          <View style={styles.infoItem}>
+            <Ionicons name="cash-outline" size={16} color={Colors.primary} />
+            <Text style={styles.infoText}>{affordability}</Text>
+          </View>
+        </View>
       </View>
-    </View>
     </Pressable>
-    </View>
   );
 }
 
 export default MealItem;
 
 const styles = StyleSheet.create({
-  mealItem: {
-    flex: 1,
-    margin: 16,
-    borderRadius: 8,
+  container: {
+    backgroundColor: Colors.surface,
+    borderRadius: BorderRadius.xl,
+    marginHorizontal: Spacing.lg,
+    marginVertical: Spacing.sm,
     overflow: 'hidden',
-    backgroundColor:'white'
+    ...Shadows.md,
+  },
+  pressed: {
+    opacity: 0.95,
+    transform: [{ scale: 0.98 }],
+  },
+  imageContainer: {
+    width: '100%',
+    height: 200,
+    position: 'relative',
   },
   image: {
     width: '100%',
-    height: 200,
+    height: '100%',
+    backgroundColor: Colors.borderLight,
   },
-  details: {
+  imageOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: Colors.overlayLight,
+  },
+  content: {
+    padding: Spacing.lg,
+  },
+  title: {
+    ...Typography.title,
+    marginBottom: Spacing.md,
+    color: Colors.text,
+  },
+  infoRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    padding: 8,
+    justifyContent: 'space-around',
   },
-  detailItem: {
-    marginHorizontal: 4,
+  infoItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.xs,
+  },
+  infoText: {
+    ...Typography.caption,
+    color: Colors.textSecondary,
+    textTransform: 'capitalize',
     fontSize: 12,
-  },title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },innerContainer:{
-    borderRadiuce:8,
-    overflow:'hidden'
-
-  },buttonPressed:{
-    opacity:.5,
-  }
+  },
+  divider: {
+    width: 1,
+    height: 16,
+    backgroundColor: Colors.border,
+  },
 });

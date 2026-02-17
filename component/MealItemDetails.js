@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
+import { Colors, Spacing } from '../constants/theme';
 import MealDetailHeader from './MealDetailHeader';
 import MealDetailBody from './MealDetailBody';
 
@@ -17,21 +18,23 @@ export default function MealItemDetails({
   isLactoseFree,
 }) {
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      <View style={styles.mealItem}>
-        <MealDetailHeader
-          title={title}
-          imageUrl={imageUrl}
-          duration={duration}
-          complexity={complexity}
-          affordability={affordability}
-          isGlutenFree={isGlutenFree}
-          isVegan={isVegan}
-          isVegetarian={isVegetarian}
-          isLactoseFree={isLactoseFree}
-        />
-        <MealDetailBody ingredients={ingredients} steps={steps} />
-      </View>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.contentContainer}
+      showsVerticalScrollIndicator={false}
+    >
+      <MealDetailHeader
+        title={title}
+        imageUrl={imageUrl}
+        duration={duration}
+        complexity={complexity}
+        affordability={affordability}
+        isGlutenFree={isGlutenFree}
+        isVegan={isVegan}
+        isVegetarian={isVegetarian}
+        isLactoseFree={isLactoseFree}
+      />
+      <MealDetailBody ingredients={ingredients} steps={steps} />
     </ScrollView>
   );
 }
@@ -39,18 +42,9 @@ export default function MealItemDetails({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
+    backgroundColor: Colors.surface,
   },
-  mealItem: {
-    margin: 16,
-    marginBottom: 32,
-    borderRadius: 12,
-    overflow: 'hidden',
-    backgroundColor: '#fff',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    elevation: 4,
+  contentContainer: {
+    paddingBottom: Spacing.xxxl,
   },
 });

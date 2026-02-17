@@ -1,51 +1,88 @@
-import { View, Text, Pressable, StyleSheet } from 'react-native'
+import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { Colors, Spacing, BorderRadius, Shadows } from '../constants/theme';
 
+const categoryIcons = {
+  Italian: 'pizza-outline',
+  'Quick & Easy': 'flash-outline',
+  Hamburgers: 'restaurant-outline',
+  German: 'beer-outline',
+  'Light & Lovely': 'leaf-outline',
+  Exotic: 'globe-outline',
+  Breakfast: 'sunny-outline',
+  Asian: 'restaurant-outline',
+  French: 'wine-outline',
+  Summer: 'ice-cream-outline',
+};
 
 function CategoryGridTile({ title = '', color = '#ccc', onPress }) {
-    return (
-    <View style={[styles.gridItem, { backgroundColor: color }]}>
-      <Pressable style={({ pressed }) => 
-        [styles.button, pressed && styles.buttonPressed]} 
-        android_ripple={{ color: '#ccc5' }}
-        onPress={onPress}
-        >
-        <View style={styles.innerContainer}>
-          <Text style={styles.title}>{title}</Text>
+  const iconName = categoryIcons[title] || 'restaurant-outline';
+
+  return (
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => [
+        styles.container,
+        { backgroundColor: color },
+        pressed && styles.pressed,
+      ]}
+      android_ripple={{ color: Colors.shimmer }}
+    >
+      <View style={styles.gradient} />
+      <View style={styles.content}>
+        <View style={styles.iconContainer}>
+          <Ionicons name={iconName} size={36} color={Colors.textOnPrimary} />
         </View>
-      </Pressable>
-    </View>
+        <Text style={styles.title} numberOfLines={2}>
+          {title}
+        </Text>
+      </View>
+    </Pressable>
   );
 }
 
 export default CategoryGridTile;
 
 const styles = StyleSheet.create({
-  gridItem: {
+  container: {
     flex: 1,
-    margin: 16,
-    height: 150,
-    borderRadius: 8,
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 8,
+    minHeight: 180,
+    margin: Spacing.sm,
+    borderRadius: BorderRadius.xl,
     overflow: 'hidden',
+    ...Shadows.lg,
   },
-  button: {
-    flex: 1,
+  gradient: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: Colors.overlay,
   },
-  innerContainer: {
+  content: {
     flex: 1,
-    padding: 16,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: Spacing.lg,
+  },
+  iconContainer: {
+    width: 64,
+    height: 64,
+    borderRadius: BorderRadius.full,
+    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: Spacing.md,
   },
   title: {
-    fontWeight: 'bold',
-    fontSize: 18,
+    fontSize: 17,
+    fontWeight: '700',
+    color: Colors.textOnPrimary,
+    textAlign: 'center',
+    letterSpacing: 0.3,
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
   },
-  buttonPressed: {
-    opacity: 0.15,
+  pressed: {
+    opacity: 0.9,
+    transform: [{ scale: 0.98 }],
   },
 });
