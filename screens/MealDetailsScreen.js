@@ -4,15 +4,28 @@ import MealItemDetails from '../component/MealItemDetails';
 import { useEffect, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors, Spacing } from '../constants/theme';
+import { FavoritesContext } from '../store/context/favorites-content';
+import { useContext } from 'react';
+
 
 export default function MealDetailsScreen({ route, navigation }) {
+
   const mealId = route.params.mealId;
   const selectedMeal = MEALS.find((meal) => meal.id === mealId);
-  const [isFavorite, setIsFavorite] = useState(false);
+
+
+  const favoritesContext = useContext(FavoritesContext);
+  const { addFavorite, removeFavorite } = favoritesContext;
+  const mealIsFavorite = favoritesContext.favorites.includes(mealId);
 
   function handleFavorite() {
-    setIsFavorite((prev) => !prev);
-    console.log('Favorite toggled for meal:', selectedMeal.id, !isFavorite);
+    if (mealIsFavorite) {
+      removeFavorite(mealId);
+      console.log('Removed from favorites');
+    } else {
+      addFavorite(mealId);
+      console.log('Added to favorites');
+    }
   }
 
   useEffect(() => {
@@ -29,15 +42,15 @@ export default function MealDetailsScreen({ route, navigation }) {
         >
           <View style={styles.favIconContainer}>
             <Ionicons
-              name={isFavorite ? 'heart' : 'heart-outline'}
+              name={mealIsFavorite ? 'heart' : 'heart-outline'}
               size={26}
-              color={isFavorite ? Colors.accentRed : Colors.primary}
+              color={mealIsFavorite ? Colors.accentRed : Colors.primary}
             />
           </View>
         </Pressable>
       ),
     });
-  }, [navigation, selectedMeal, isFavorite]);
+  }, [navigation, selectedMeal, mealIsFavorite]);
 
   return (
     <View style={styles.container}>

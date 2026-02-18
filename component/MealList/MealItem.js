@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { View, Text, Image, Pressable, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Colors, Spacing, BorderRadius, Shadows, Typography } from '../constants/theme';
+import { Colors, Spacing, BorderRadius, Shadows, Typography } from '../../constants/theme';
 
 function MealItem({ title, imageUrl, duration, complexity, affordability, id }) {
   const navigation = useNavigation();

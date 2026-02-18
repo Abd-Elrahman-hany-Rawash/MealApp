@@ -1,8 +1,6 @@
-import { View, FlatList, StyleSheet, Text } from 'react-native';
 import { MEALS, CATEGORIES } from '../data/dummy-data';
-import MealItem from '../component/MealItem';
 import { useEffect } from 'react';
-import { Colors, Spacing, Typography } from '../constants/theme';
+import MealsList from '../component/MealList/MealsList';
 
 export default function MealsOverviewScreen({ route, navigation }) {
   const categoryId = route?.params?.categoryId ?? '';
@@ -21,56 +19,10 @@ export default function MealsOverviewScreen({ route, navigation }) {
     }
   }, [categoryId, navigation, categoryTitle]);
 
-  function renderMealItem(itemData) {
-    const { id, title, imageUrl, duration, complexity, affordability } =
-      itemData.item;
-    return (
-      <MealItem
-        title={title}
-        affordability={affordability}
-        complexity={complexity}
-        duration={duration}
-        imageUrl={imageUrl}
-        id={id}
-      />
-    );
-  }
+  
 
   return (
-    <View style={styles.container}>
-      {displayedMeals.length > 0 ? (
-        <FlatList
-          data={displayedMeals}
-          renderItem={renderMealItem}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.listContent}
-          showsVerticalScrollIndicator={false}
-        />
-      ) : (
-        <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>No meals found</Text>
-        </View>
-      )}
-    </View>
+    <MealsList displayedMeals={displayedMeals} />
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.background,
-  },
-  listContent: {
-    paddingVertical: Spacing.lg,
-    paddingBottom: Spacing.xxxl,
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  emptyText: {
-    ...Typography.subtitle,
-    color: Colors.textMuted,
-  },
-});

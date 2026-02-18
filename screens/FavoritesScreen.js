@@ -1,19 +1,17 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors, Spacing, Typography } from '../constants/theme';
-
+import { FavoritesContext } from '../store/context/favorites-content';
+import { useContext } from 'react';
+import MealsList from '../component/MealList/MealsList';
+import { MEALS } from '../data/dummy-data';
 export default function FavoritesScreen() {
+  const favoritesContext = useContext(FavoritesContext);
+  const { favorites } = favoritesContext;
+  const displayedMeals = MEALS.filter((meal) => favorites.includes(meal.id));
   return (
     <View style={styles.container}>
-      <View style={styles.emptyState}>
-        <View style={styles.iconCircle}>
-          <Ionicons name="heart-outline" size={64} color={Colors.primary} />
-        </View>
-        <Text style={styles.title}>No favorites yet</Text>
-        <Text style={styles.subtitle}>
-          Start adding your favorite meals{'\n'}by tapping the heart icon
-        </Text>
-      </View>
+      <MealsList displayedMeals={displayedMeals} />
     </View>
   );
 }
